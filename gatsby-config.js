@@ -4,5 +4,5 @@
  * See: https://www.gatsbyjs.org/docs/gatsby-config/
  */
 module.exports = {
-  plugins: ["gatsby-plugin-emotion"],
+  plugins: ["gatsby-plugin-emotion", "gatsby-plugin-typescript"],
 };
