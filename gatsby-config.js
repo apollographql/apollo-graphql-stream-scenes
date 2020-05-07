@@ -4,5 +4,12 @@
  * See: https://www.gatsbyjs.org/docs/gatsby-config/
  */
 module.exports = {
-  plugins: ["gatsby-plugin-emotion", "gatsby-plugin-typescript"],
+  siteMetadata: {
+    title: "Apollo GraphQL on Twitch",
+  },
+  plugins: [
+    "gatsby-plugin-emotion",
+    "gatsby-plugin-typescript",
+    "gatsby-plugin-react-helmet",
+  ],
 };
