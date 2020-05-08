@@ -7,9 +7,5 @@ module.exports = {
   siteMetadata: {
     title: "Apollo GraphQL on Twitch",
   },
-  plugins: [
-    "gatsby-plugin-emotion",
-    "gatsby-plugin-typescript",
-    "gatsby-plugin-react-helmet",
-  ],
+  plugins: ["gatsby-plugin-emotion", "gatsby-plugin-react-helmet"],
 };
