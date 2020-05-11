@@ -129,6 +129,7 @@ async function main() {
   app.post("/webhooks/follows", jsonParser, async (req, res) => {
     // handle twitch webhooks here
     const follow = req.body.data[0].from_name;
+    console.log({ follow });
     pubsub.publish(FOLLOW, { follow });
     res.status(200).end();
   });
