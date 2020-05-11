@@ -123,14 +123,12 @@ async function main() {
   server.applyMiddleware({ app });
 
   app.get("/webhooks/follows", async (req, res) => {
-    console.log("accepting challenge");
     res.status(200).send(req.query["hub.challenge"]);
   });
 
   app.post("/webhooks/follows", jsonParser, async (req, res) => {
     // handle twitch webhooks here
     const follow = req.body.data[0].from_name;
-    console.log({ follow });
     pubsub.publish(FOLLOW, { follow });
     res.status(200).end();
   });
@@ -167,7 +165,7 @@ async function main() {
 
     try {
       const { data: userData } = await axios.get(
-        "https://api.twitch.tv/helix/users?login=fastcup_net",
+        "https://api.twitch.tv/helix/users",
         {
           headers: {
             authorization: `Bearer ${process.env.SUBSCRIPTIONS_TOKEN}`,
@@ -192,8 +190,6 @@ async function main() {
           },
         }
       );
-
-      console.log(process.env.CALLBACK_URL);
 
       await axios.post(
         "https://api.twitch.tv/helix/webhooks/hub",
