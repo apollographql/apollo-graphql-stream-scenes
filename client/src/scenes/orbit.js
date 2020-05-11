@@ -43,29 +43,32 @@ export default function OrbitScene() {
               css={{
                 width: "40%",
                 display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-around",
+                justifyContent: "flex-start",
+                alignItems: "center",
               }}
             >
-              <h1
-                css={{
-                  fontFamily: "Source Sans Pro",
-                  fontSize: "2.5rem",
-                  fontWeight: 800,
-                }}
-              >
-                Latest News - What's New In GraphQL
-              </h1>
-              <h2
-                css={{
-                  fontFamily: "Source Code Pro",
-                  fontWeight: 600,
-                  letterSpacing: 1.2,
-                  fontSize: 24,
-                }}
-              >
-                @kurtkemple @trevorblades
-              </h2>
+              <div>
+                <h1
+                  css={{
+                    fontFamily: "Source Sans Pro",
+                    fontSize: "2.5rem",
+                    fontWeight: 800,
+                    marginBottom: 8,
+                  }}
+                >
+                  Latest News - What's New In GraphQL
+                </h1>
+                <h2
+                  css={{
+                    fontFamily: "Source Code Pro",
+                    fontWeight: 600,
+                    letterSpacing: 1.2,
+                    fontSize: 24,
+                  }}
+                >
+                  @kurtkemple @trevorblades
+                </h2>
+              </div>
             </div>
           </div>
         </div>
