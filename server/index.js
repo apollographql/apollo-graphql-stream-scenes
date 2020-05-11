@@ -165,7 +165,7 @@ async function main() {
 
     try {
       const { data: userData } = await axios.get(
-        "https://api.twitch.tv/helix/users",
+        "https://api.twitch.tv/helix/users?login=pokimane",
         {
           headers: {
             authorization: `Bearer ${process.env.SUBSCRIPTIONS_TOKEN}`,
