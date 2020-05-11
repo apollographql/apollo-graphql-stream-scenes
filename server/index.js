@@ -114,7 +114,7 @@ async function main() {
       emotes,
       message,
       displayName: tags["display-name"],
-      color: tags["color"],
+      color: tags["color"] || "#A23DF5",
     };
 
     pubsub.publish(CHAT_MESSAGE, { chat: response });
