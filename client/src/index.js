@@ -17,7 +17,10 @@ import { WebSocketLink } from "@apollo/link-ws";
 import App from "./app";
 
 const wsLink = new WebSocketLink({
-  uri: `ws://${process.env.REACT_APP_SERVER_DOMAIN}/subscriptions`,
+  uri:
+    process.env.NODE_ENV === "production"
+      ? `wss://${process.env.REACT_APP_SERVER_DOMAIN}/subscriptions`
+      : `ws://${process.env.REACT_APP_SERVER_DOMAIN}/subscriptions`,
   options: {
     reconnect: true,
   },
