@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { Global, css } from "@emotion/core";
 import emotionReset from "emotion-reset";
 import "typeface-source-sans-pro";
+import "typeface-source-code-pro";
 import {
   ApolloProvider,
   ApolloClient,
@@ -16,14 +17,14 @@ import { WebSocketLink } from "@apollo/link-ws";
 import App from "./app";
 
 const wsLink = new WebSocketLink({
-  uri: `ws://localhost:4000/subscriptions`,
+  uri: `ws://${REACT_APP_SERVER_DOMAIN}/subscriptions`,
   options: {
     reconnect: true,
   },
 });
 
 const httpLink = new HttpLink({
-  uri: "http://localhost:4000/graphql",
+  uri: `http://${REACT_APP_SERVER_DOMAIN}/graphql`,
 });
 
 const link = split(

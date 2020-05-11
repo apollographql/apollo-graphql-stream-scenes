@@ -1,0 +1,11 @@
+{
+  "name": "apollo-graphql-stream-scenes",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/kkemple/apollo-graphql-stream-scenes.git",
+  "author": "Kurt Kemple <kurtiskemple@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "prettier": "^2.0.5"
+  }
+}
