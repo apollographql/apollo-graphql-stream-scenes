@@ -123,6 +123,7 @@ async function main() {
   server.applyMiddleware({ app });
 
   app.get("/webhooks/follows", async (req, res) => {
+    console.log("accepting challenge");
     res.status(200).send(req.query["hub.challenge"]);
   });
 
