@@ -85,7 +85,7 @@ async function main() {
       username: "theworstdev",
       password: `oauth:${process.env.CHATBOT_TOKEN}`,
     },
-    channels: [process.env.CHATBOT_CHANNEL],
+    channels: [process.env.CHANNEL],
   });
 
   client.connect();
