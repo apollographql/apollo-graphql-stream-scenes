@@ -17,14 +17,14 @@ import { WebSocketLink } from "@apollo/link-ws";
 import App from "./app";
 
 const wsLink = new WebSocketLink({
-  uri: `ws://${REACT_APP_SERVER_DOMAIN}/subscriptions`,
+  uri: `ws://${process.env.REACT_APP_SERVER_DOMAIN}/subscriptions`,
   options: {
     reconnect: true,
   },
 });
 
 const httpLink = new HttpLink({
-  uri: `http://${REACT_APP_SERVER_DOMAIN}/graphql`,
+  uri: `http://${process.env.REACT_APP_SERVER_DOMAIN}/graphql`,
 });
 
 const link = split(
