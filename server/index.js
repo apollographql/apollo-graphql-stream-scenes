@@ -165,7 +165,7 @@ async function main() {
 
     try {
       const { data: userData } = await axios.get(
-        "https://api.twitch.tv/helix/users?login=fastcup_net",
+        `https://api.twitch.tv/helix/users?login=${process.env.CHANNEL}`,
         {
           headers: {
             authorization: `Bearer ${process.env.SUBSCRIPTIONS_TOKEN}`,
@@ -180,7 +180,7 @@ async function main() {
         "https://api.twitch.tv/helix/webhooks/hub",
         {
           "hub.callback": `${process.env.CALLBACK_URL}/webhooks/follows`,
-          "hub.mode": "unsubscribe",
+          "hub.mode": "subscribe",
           "hub.topic": followersTopic,
           "hub.lease_seconds": 60 * 60 * 4,
         },
@@ -195,7 +195,7 @@ async function main() {
         "https://api.twitch.tv/helix/webhooks/hub",
         {
           "hub.callback": `${process.env.CALLBACK_URL}/webhooks/subscriptions`,
-          "hub.mode": "unsubscribe",
+          "hub.mode": "subscribe",
           "hub.topic": subscribersTopic,
           "hub.lease_seconds": 60 * 60 * 4,
         },
