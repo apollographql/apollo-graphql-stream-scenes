@@ -1,22 +1,19 @@
-import React from "react";
+/** @jsx jsx */
+import { jsx } from "@emotion/core";
 
-import SEO from "../components/seo";
-import Chat from "../components/chat";
-
-import useHasMounted from "../hooks/mounted";
+import Chat from "../../components/chat";
+import bg from "./mission-briefing-bg.svg";
+import logo from "./mission-briefing-logo.svg";
 
 export default function IndexPage() {
-  const mounted = useHasMounted();
-
   return (
     <main>
-      <SEO />
       <div
         css={{
           width: "100vw",
           height: "100vh",
           backgroundColor: "#7ED9A4",
-          backgroundImage: `URL("/mission-briefing-bg.svg")`,
+          backgroundImage: `URL(${bg})`,
           backgroundSize: "75px 75px",
         }}
       >
@@ -29,15 +26,11 @@ export default function IndexPage() {
             height: "100%",
           }}
         >
-          <img
-            src="/mission-briefing-logo.svg"
-            css={{ height: 400 }}
-            alt="Mission Briefing"
-          />
+          <img src={logo} css={{ height: 400 }} alt="Mission Briefing" />
           <div
             css={{
               width: "100%",
-              paddingLeft: "1.2rem",
+              paddingLeft: "75px",
               paddingRight: "1.2rem",
               paddingTop: ".8rem",
               paddingBottom: ".8rem",
@@ -56,11 +49,7 @@ export default function IndexPage() {
             >
               Powered by Gatsby and Twitch
             </h1>
-            {mounted && (
-              <div>
-                <Chat />
-              </div>
-            )}
+            <Chat />
           </div>
         </div>
       </div>

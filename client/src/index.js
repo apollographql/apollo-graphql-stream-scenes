@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import { Global, css } from "@emotion/core";
 import emotionReset from "emotion-reset";
 import "typeface-source-sans-pro";
@@ -11,6 +12,8 @@ import {
 } from "@apollo/client";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "@apollo/link-ws";
+
+import App from "./app";
 
 const wsLink = new WebSocketLink({
   uri: `ws://localhost:4000/subscriptions`,
@@ -42,22 +45,23 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-export const wrapRootElement = ({ element }) => {
-  return (
-    <>
-      <Global
-        styles={css`
-          ${emotionReset}
+ReactDOM.render(
+  <React.StrictMode>
+    <Global
+      styles={css`
+        ${emotionReset}
 
-          *, *::after, *::before {
-            box-sizing: border-box;
-            -moz-osx-font-smoothing: grayscale;
-            -webkit-font-smoothing: antialiased;
-            font-smoothing: antialiased;
-          }
-        `}
-      />
-      <ApolloProvider client={client}>{element}</ApolloProvider>
-    </>
-  );
-};
+        *, *::after, *::before {
+          box-sizing: border-box;
+          -moz-osx-font-smoothing: grayscale;
+          -webkit-font-smoothing: antialiased;
+          font-smoothing: antialiased;
+        }
+      `}
+    />
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
+  </React.StrictMode>,
+  document.getElementById("root")
+);

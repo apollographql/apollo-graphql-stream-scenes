@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+/** @jsx jsx */
+import { jsx } from "@emotion/core";
+import { useState, useEffect } from "react";
 import { gql, useApolloClient } from "@apollo/client";
 
 const CHAT_SUBSCRIPTION = gql`
