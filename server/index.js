@@ -193,6 +193,8 @@ async function main() {
         }
       );
 
+      console.log(process.env.CALLBACK_URL);
+
       await axios.post(
         "https://api.twitch.tv/helix/webhooks/hub",
         {
