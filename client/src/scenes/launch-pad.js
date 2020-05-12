@@ -2,12 +2,12 @@
 import { jsx } from "@emotion/core";
 import { FaTwitch } from "react-icons/fa";
 
-import bg from "../images/mission-briefing-bg.svg";
-import logo from "../images/mission-briefing-logo.svg";
+import bg from "../images/launch-pad-bg.svg";
+import logo from "../images/launch-pad-logo.svg";
 import useChannel from "../hooks/channel";
 import useCurrentViewers from "../hooks/current-viewer-count";
 
-export default function MissionBriefingScene() {
+export default function LaunchPadScene() {
   const channel = useChannel();
   const userCount = useCurrentViewers();
 
@@ -17,7 +17,7 @@ export default function MissionBriefingScene() {
         css={{
           width: "100vw",
           height: "100vh",
-          backgroundColor: "#7ED9A4",
+          backgroundColor: "#F59140",
           backgroundImage: `URL(${bg})`,
           backgroundSize: "75px 75px",
           backgroundBlendMode: "overlay",

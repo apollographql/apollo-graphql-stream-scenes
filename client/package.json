@@ -18,6 +18,7 @@
     "randomcolor": "^0.5.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-icons": "^3.10.0",
     "react-scripts": "3.4.1",
     "subscriptions-transport-ws": "^0.9.16",
     "typeface-source-code-pro": "^1.1.3",

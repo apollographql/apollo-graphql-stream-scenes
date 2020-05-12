@@ -12,7 +12,7 @@ import followImg from "../images/follow.png";
 export default function NewFollowers() {
   const follower = useFollows();
   const [current, setCurrent] = useState(follower);
-  const [stale, setStale] = useState(follower);
+  const [stale, setStale] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(0.8);
   const [play] = useSound(followSound, { playbackRate, volume: 0.5 });
   const timeout = useRef();

@@ -1,111 +1,23 @@
 require("dotenv").config();
 
 const express = require("express");
-const { ApolloServer, gql } = require("apollo-server-express");
+const { ApolloServer } = require("apollo-server-express");
 const { execute, subscribe } = require("graphql");
 const { createServer } = require("http");
-const { SubscriptionServer } = require("subscriptions-transport-ws");
 const { PubSub } = require("graphql-subscriptions");
+const { SubscriptionServer } = require("subscriptions-transport-ws");
 const { makeExecutableSchema } = require("graphql-tools");
-const tmi = require("tmi.js");
-const axios = require("axios");
-const bodyParser = require("body-parser");
-const uuid = require("uuid").v4;
+
+const { typeDefs, createResolvers } = require("./graphql");
+const { createChatClient } = require("./chat");
+const { createWebhooks } = require("./webhooks");
 
 const PORT = 4000;
-const CHAT_MESSAGE = "CHAT_MESSAGE";
-const FOLLOW = "FOLLOW";
-const SUBSCRIBE = "SUBSCRIBE";
-const RAID = "RAID";
-
-const typeDefs = gql`
-  type Query {
-    channel: Channel!
-  }
-
-  type Channel {
-    title: String!
-    category: String!
-    views: Int!
-    followers: Int!
-  }
-
-  type ChatMessage {
-    displayName: String!
-    message: String!
-    color: String
-    emotes: [[String!]]
-  }
-
-  type RaidMessage {
-    userName: String!
-    viewers: Int!
-  }
-
-  type SubscriptionMessage {
-    isGift: Boolean!
-    userName: String!
-    gifterName: String
-  }
-
-  type Subscription {
-    chat: ChatMessage!
-    follow: String!
-    sub: SubscriptionMessage!
-    raid: RaidMessage!
-  }
-`;
 
 async function main() {
-  const pubsub = new PubSub();
   const app = express();
-  const jsonParser = bodyParser.json();
-
-  const resolvers = {
-    Query: {
-      channel: async () => {
-        const { data: userData } = await axios.get(
-          `https://api.twitch.tv/helix/users?login=${process.env.CHANNEL}`,
-          {
-            headers: {
-              authorization: `Bearer ${process.env.SUBSCRIPTIONS_TOKEN}`,
-              "Client-ID": process.env.CLIENT_ID,
-            },
-          }
-        );
-
-        const { data: channelData } = await axios.get(
-          `https://api.twitch.tv/v5/channels/${userData.data[0].id}`,
-          {
-            headers: {
-              authorization: `Bearer ${process.env.SUBSCRIPTIONS_TOKEN}`,
-              "Client-ID": process.env.CLIENT_ID,
-            },
-          }
-        );
-
-        return {
-          title: channelData.status,
-          views: channelData.views,
-          followers: channelData.followers,
-        };
-      },
-    },
-    Subscription: {
-      chat: {
-        subscribe: () => pubsub.asyncIterator([CHAT_MESSAGE]),
-      },
-      follow: {
-        subscribe: () => pubsub.asyncIterator([FOLLOW]),
-      },
-      sub: {
-        subscribe: () => pubsub.asyncIterator([SUBSCRIBE]),
-      },
-      raid: {
-        subscribe: () => pubsub.asyncIterator([RAID]),
-      },
-    },
-  };
+  const pubsub = new PubSub();
+  const resolvers = createResolvers(pubsub);
 
   const server = new ApolloServer({
     typeDefs,
@@ -114,84 +26,7 @@ async function main() {
     playground: true,
     introspection: true,
   });
-
-  // process.env.CHATBOT_TOKEN
-  const client = new tmi.Client({
-    connection: {
-      secure: true,
-      reconnect: true,
-    },
-    identity: {
-      username: process.env.CHANNEL,
-      password: `oauth:${process.env.CHATBOT_TOKEN}`,
-    },
-    channels: [process.env.CHANNEL],
-  });
-
-  client.connect();
-
-  client.on("raided", (_, username, viewers) => {
-    pubsub.publish(RAID, { raid: { username, viewers } });
-  });
-
-  client.on("message", (_, tags, message, self) => {
-    if (self) return;
-    let emotes = null;
-
-    const emoteObj = tags["emotes"];
-
-    if (emoteObj) {
-      emotes = Object.keys(emoteObj).reduce((arr, emoteCode) => {
-        const instances = emoteObj[emoteCode];
-
-        const codesWithStartEnd = instances.map((instance) => {
-          const [start, end] = instance.split("-");
-
-          return [emoteCode, start, end];
-        });
-
-        return [...arr, ...codesWithStartEnd];
-      }, []);
-    }
-
-    const response = {
-      emotes,
-      message,
-      displayName: tags["display-name"],
-      color: tags["color"],
-    };
-
-    pubsub.publish(CHAT_MESSAGE, { chat: response });
-  });
-
   server.applyMiddleware({ app });
-
-  app.get("/webhooks/follows", async (req, res) => {
-    pubsub.publish(FOLLOW, { follow: `theworstdev-${uuid()}` });
-    res.status(200).send(req.query["hub.challenge"]);
-  });
-
-  app.post("/webhooks/follows", jsonParser, async (req, res) => {
-    // handle twitch webhooks here
-    const follow = req.body.data[0].from_name;
-    pubsub.publish(FOLLOW, { follow });
-    res.status(200).end();
-  });
-
-  app.get("/webhooks/subscriptions", async (req, res) => {
-    res.status(200).send(req.query["hub.challenge"]);
-  });
-
-  app.post("/webhooks/subscriptions", jsonParser, async (req, res) => {
-    // handle twitch webhooks here
-    const eventData = req.body.data[0].event_data;
-    pubsub.publish(SUBSCRIBE, {
-      isGift: eventData.is_gift,
-      userName: eventData.user_name,
-      gifterName: eventData.gifter_name,
-    });
-    res.status(200).end();
-  });
 
   const ws = createServer(app);
   ws.listen(PORT, async () => {
@@ -208,54 +43,8 @@ async function main() {
       }
     );
 
-    try {
-      const { data: userData } = await axios.get(
-        `https://api.twitch.tv/helix/users?login=${process.env.CHANNEL}`,
-        {
-          headers: {
-            authorization: `Bearer ${process.env.SUBSCRIPTIONS_TOKEN}`,
-            "Client-ID": process.env.CLIENT_ID,
-          },
-        }
-      );
-
-      const followersTopic = `https://api.twitch.tv/helix/users/follows?to_id=${userData.data[0].id}&first=1`;
-      const subscribersTopic = `https://api.twitch.tv/helix/subscriptions/events?broadcaster_id=${userData.data[0].id}7&first=1`;
-
-      await axios.post(
-        "https://api.twitch.tv/helix/webhooks/hub",
-        {
-          "hub.callback": `${process.env.CALLBACK_URL}/webhooks/follows`,
-          "hub.mode": "subscribe",
-          "hub.topic": followersTopic,
-          "hub.lease_seconds": 60 * 60 * 4,
-        },
-        {
-          headers: {
-            authorization: `Bearer ${process.env.SUBSCRIPTIONS_TOKEN}`,
-            "Client-ID": process.env.CLIENT_ID,
-          },
-        }
-      );
-
-      await axios.post(
-        "https://api.twitch.tv/helix/webhooks/hub",
-        {
-          "hub.callback": `${process.env.CALLBACK_URL}/webhooks/subscriptions`,
-          "hub.mode": "subscribe",
-          "hub.topic": subscribersTopic,
-          "hub.lease_seconds": 60 * 60 * 4,
-        },
-        {
-          headers: {
-            authorization: `Bearer ${process.env.SUBSCRIPTIONS_TOKEN}`,
-            "Client-ID": process.env.CLIENT_ID,
-          },
-        }
-      );
-    } catch (error) {
-      console.log(error);
-    }
+    createChatClient(pubsub);
+    createWebhooks(app, pubsub);
   });
 }
 
