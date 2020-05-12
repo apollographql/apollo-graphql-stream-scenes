@@ -1,5 +1,4 @@
 const axios = require("axios");
-const uuid = require("uuid").v4;
 const bodyParser = require("body-parser");
 
 const FOLLOW = "FOLLOW";
@@ -9,7 +8,6 @@ const createWebhooks = (app, pubsub) => {
   const jsonParser = bodyParser.json();
 
   app.get("/webhooks/follows", async (req, res) => {
-    pubsub.publish(FOLLOW, { follow: `theworstdev-${uuid()}` });
     res.status(200).send(req.query["hub.challenge"]);
   });
 
