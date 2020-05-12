@@ -56,7 +56,7 @@ export default function useChatMessages() {
           message = parseEmotes(data.chat.emotes, message);
         }
 
-        setMessages([{ ...data.chat, message }, ...messages]);
+        setMessages([...messages, { ...data.chat, message }]);
       },
     });
 

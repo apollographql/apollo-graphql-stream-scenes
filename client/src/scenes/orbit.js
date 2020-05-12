@@ -3,8 +3,10 @@ import { jsx } from "@emotion/core";
 
 import bg from "../images/orbit-bg.svg";
 import logo from "../images/orbit-logo.svg";
+import useChannel from "../hooks/channel";
 
 export default function OrbitScene() {
+  const channel = useChannel();
   return (
     <main>
       <div
@@ -56,7 +58,7 @@ export default function OrbitScene() {
                     marginBottom: 8,
                   }}
                 >
-                  Latest News - What's New In GraphQL
+                  {channel?.title}
                 </h1>
                 <h2
                   css={{

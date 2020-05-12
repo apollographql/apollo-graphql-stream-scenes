@@ -1,7 +1,3 @@
-// udpate oauth keys, make env vars
-// make route for orbit
-// make callback urls env vars
-// make client connection url an env var
 require("dotenv").config();
 
 const express = require("express");
@@ -14,22 +10,36 @@ const { makeExecutableSchema } = require("graphql-tools");
 const tmi = require("tmi.js");
 const axios = require("axios");
 const bodyParser = require("body-parser");
+const uuid = require("uuid").v4;
 
 const PORT = 4000;
 const CHAT_MESSAGE = "CHAT_MESSAGE";
 const FOLLOW = "FOLLOW";
 const SUBSCRIBE = "SUBSCRIBE";
+const RAID = "RAID";
 
 const typeDefs = gql`
   type Query {
-    hello: String!
+    channel: Channel!
+  }
+
+  type Channel {
+    title: String!
+    category: String!
+    views: Int!
+    followers: Int!
   }
 
   type ChatMessage {
     displayName: String!
     message: String!
-    color: String!
+    color: String
     emotes: [[String!]]
+  }
+
+  type RaidMessage {
+    userName: String!
+    viewers: Int!
   }
 
   type SubscriptionMessage {
@@ -39,9 +49,10 @@ const typeDefs = gql`
   }
 
   type Subscription {
-    chat: ChatMessage
+    chat: ChatMessage!
     follow: String!
-    sub: SubscriptionMessage
+    sub: SubscriptionMessage!
+    raid: RaidMessage!
   }
 `;
 
@@ -52,7 +63,33 @@ async function main() {
 
   const resolvers = {
     Query: {
-      hello: () => "Hello",
+      channel: async () => {
+        const { data: userData } = await axios.get(
+          `https://api.twitch.tv/helix/users?login=${process.env.CHANNEL}`,
+          {
+            headers: {
+              authorization: `Bearer ${process.env.SUBSCRIPTIONS_TOKEN}`,
+              "Client-ID": process.env.CLIENT_ID,
+            },
+          }
+        );
+
+        const { data: channelData } = await axios.get(
+          `https://api.twitch.tv/v5/channels/${userData.data[0].id}`,
+          {
+            headers: {
+              authorization: `Bearer ${process.env.SUBSCRIPTIONS_TOKEN}`,
+              "Client-ID": process.env.CLIENT_ID,
+            },
+          }
+        );
+
+        return {
+          title: channelData.status,
+          views: channelData.views,
+          followers: channelData.followers,
+        };
+      },
     },
     Subscription: {
       chat: {
@@ -63,6 +100,9 @@ async function main() {
       },
       sub: {
         subscribe: () => pubsub.asyncIterator([SUBSCRIBE]),
+      },
+      raid: {
+        subscribe: () => pubsub.asyncIterator([RAID]),
       },
     },
   };
@@ -82,13 +122,17 @@ async function main() {
       reconnect: true,
     },
     identity: {
-      username: "theworstdev",
+      username: process.env.CHANNEL,
       password: `oauth:${process.env.CHATBOT_TOKEN}`,
     },
     channels: [process.env.CHANNEL],
   });
 
   client.connect();
+
+  client.on("raided", (_, username, viewers) => {
+    pubsub.publish(RAID, { raid: { username, viewers } });
+  });
 
   client.on("message", (_, tags, message, self) => {
     if (self) return;
@@ -114,7 +158,7 @@ async function main() {
       emotes,
       message,
       displayName: tags["display-name"],
-      color: tags["color"] || "#A23DF5",
+      color: tags["color"],
     };
 
     pubsub.publish(CHAT_MESSAGE, { chat: response });
@@ -123,6 +167,7 @@ async function main() {
   server.applyMiddleware({ app });
 
   app.get("/webhooks/follows", async (req, res) => {
+    pubsub.publish(FOLLOW, { follow: `theworstdev-${uuid()}` });
     res.status(200).send(req.query["hub.challenge"]);
   });
 
@@ -169,6 +214,7 @@ async function main() {
         {
           headers: {
             authorization: `Bearer ${process.env.SUBSCRIPTIONS_TOKEN}`,
+            "Client-ID": process.env.CLIENT_ID,
           },
         }
       );
@@ -187,6 +233,7 @@ async function main() {
         {
           headers: {
             authorization: `Bearer ${process.env.SUBSCRIPTIONS_TOKEN}`,
+            "Client-ID": process.env.CLIENT_ID,
           },
         }
       );
@@ -202,6 +249,7 @@ async function main() {
         {
           headers: {
             authorization: `Bearer ${process.env.SUBSCRIPTIONS_TOKEN}`,
+            "Client-ID": process.env.CLIENT_ID,
           },
         }
       );

@@ -27,7 +27,10 @@ const wsLink = new WebSocketLink({
 });
 
 const httpLink = new HttpLink({
-  uri: `http://${process.env.REACT_APP_SERVER_DOMAIN}/graphql`,
+  uri:
+    process.env.NODE_ENV === "production"
+      ? `https://${process.env.REACT_APP_SERVER_DOMAIN}/graphql`
+      : `http://${process.env.REACT_APP_SERVER_DOMAIN}/graphql`,
 });
 
 const link = split(

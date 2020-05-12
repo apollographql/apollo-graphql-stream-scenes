@@ -1,17 +1,28 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import randomcolor from "randomcolor";
 
 import useChatMessages from "../hooks/chat-messages";
+import { useState } from "react";
 
-export default function Chat({ backgroundColor = "#ffffff" }) {
+export default function Chat() {
+  const [usernameColors, setUsernameColors] = useState({});
   const messages = useChatMessages();
-  const [reversed, setReversed] = useState([...messages].reverse());
 
-  useEffect(() => {
-    setReversed([...messages].reverse());
-  }, [messages]);
+  const getColorForName = ({ displayName, color }) => {
+    if (color) {
+      return color;
+    }
+
+    if (!usernameColors[displayName]) {
+      const userColor = randomcolor();
+      setUsernameColors({ ...usernameColors, [displayName]: userColor });
+      return userColor;
+    }
+
+    return usernameColors[displayName];
+  };
 
   return (
     <div
@@ -26,7 +37,7 @@ export default function Chat({ backgroundColor = "#ffffff" }) {
           height: "100%",
           width: "100%",
           fontSize: "22px",
-          wordBreak: "break-all",
+          wordBreak: "break-word",
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-end",
@@ -59,7 +70,7 @@ export default function Chat({ backgroundColor = "#ffffff" }) {
         }}
       >
         <AnimatePresence initial={false}>
-          {reversed.map((message, index) => (
+          {messages.map((message, index) => (
             <motion.li
               css={{
                 display: "flex",
@@ -75,11 +86,11 @@ export default function Chat({ backgroundColor = "#ffffff" }) {
               <span
                 css={{
                   paddingRight: "8px",
-                  color: message.color,
+                  color: getColorForName(message),
                   fontFamily: "Source Sans Pro",
                   fontWeight: "bold",
                   textAlign: "end",
-                  width: "30%",
+                  width: "35%",
                 }}
               >
                 {message.displayName}

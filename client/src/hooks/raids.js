@@ -2,22 +2,25 @@ import { gql, useApolloClient } from "@apollo/client";
 import { useValue, useRepeater } from "@repeaterjs/react-hooks";
 import { useEffect } from "react";
 
-const FOLLOW_SUBSCRIPTION = gql`
+const RAID_SUBSCRIPTION = gql`
   subscription Follow {
-    follow
+    raid {
+      userName
+      viewers
+    }
   }
 `;
 
-export default function useFollows() {
+export default function useRaids() {
   const client = useApolloClient();
-  const [follows, push, stop] = useRepeater();
+  const [raids, push, stop] = useRepeater();
 
   useEffect(() => {
     const unsubscribe = client
-      .subscribe({ query: FOLLOW_SUBSCRIPTION })
+      .subscribe({ query: RAID_SUBSCRIPTION })
       .subscribe({
         next: ({ data }) => {
-          push(data.follow);
+          push(data.raid);
         },
       });
 
@@ -28,8 +31,8 @@ export default function useFollows() {
   }, [push, stop, client]);
 
   const value = useValue(async function* () {
-    for await (const follow of follows) {
-      yield follow;
+    for await (const raid of raids) {
+      yield raid;
       await new Promise((resolve) => setTimeout(resolve, 3000));
     }
   });
