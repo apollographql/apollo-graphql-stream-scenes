@@ -108,7 +108,6 @@ export default function LaunchPadScene() {
             <div
               css={{
                 display: "flex",
-                justifyContent: "center",
                 flexDirection: "column",
               }}
             >

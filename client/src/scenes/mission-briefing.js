@@ -108,7 +108,6 @@ export default function MissionBriefingScene() {
             <div
               css={{
                 display: "flex",
-                justifyContent: "center",
                 flexDirection: "column",
               }}
             >

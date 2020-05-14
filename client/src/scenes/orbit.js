@@ -101,7 +101,7 @@ export default function OrbitScene() {
               width: "50%",
               display: "flex",
               justifyContent: "flex-start",
-              alignItems: "flex-start",
+              alignItems: "stretch",
               paddingTop: ".8rem",
               paddingBottom: ".8rem",
             }}
@@ -109,7 +109,6 @@ export default function OrbitScene() {
             <div
               css={{
                 display: "flex",
-                justifyContent: "center",
                 flexDirection: "column",
               }}
             >
