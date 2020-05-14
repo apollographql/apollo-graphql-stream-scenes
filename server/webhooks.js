@@ -4,10 +4,15 @@ const bodyParser = require("body-parser");
 const FOLLOW = "FOLLOW";
 const SUBSCRIBE = "SUBSCRIBE";
 
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
 const createWebhooks = (app, pubsub) => {
   const jsonParser = bodyParser.json();
 
   app.get("/webhooks/follows", async (req, res) => {
+    pubsub.publish(FOLLOW, { follow: `theworstdev-${getRandomInt(1000)}` });
     res.status(200).send(req.query["hub.challenge"]);
   });
 

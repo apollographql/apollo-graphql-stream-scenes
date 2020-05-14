@@ -2,13 +2,12 @@ import { useQuery, gql } from "@apollo/client";
 
 export default () => {
   const { data, error } = useQuery(gql`
-    query CurrentFollowers {
-      channel {
-        currentStream {
-          id
-          title
-          streamers
-        }
+    query UpcomingStreams {
+      streams {
+        id
+        title
+        startTime
+        date
       }
     }
   `);
@@ -17,5 +16,5 @@ export default () => {
     console.error(error);
   }
 
-  return data?.channel;
+  return data?.streams;
 };

@@ -1,5 +1,6 @@
 const { gql } = require("apollo-server-express");
-const { startOfDay, addWeeks } = require("date-fns");
+const { subHours, addHours, format } = require("date-fns");
+const { format: formatWithTZ, utcToZonedTime } = require("date-fns-tz");
 const axios = require("axios");
 
 const FOLLOW = "FOLLOW";
@@ -19,12 +20,16 @@ const typeDefs = gql`
     category: String!
     views: Int!
     followers: Int!
-    nextStream: Stream
+    currentStream: Stream
     currentViewers: Int!
   }
 
   type Stream {
+    id: ID!
+    title: String!
     description: String!
+    date: String!
+    startTime: String!
     streamers: [String!]!
   }
 
@@ -68,7 +73,22 @@ const createResolvers = (pubsub) => {
         try {
           const { data: events } = await axios.get(URL);
 
-          return events.items;
+          return events.items.map((event) => {
+            return {
+              id: event.id,
+              title: event.summary.replace(/^.+:\s/, ""),
+              description: event.description,
+              startTime: formatWithTZ(
+                utcToZonedTime(
+                  new Date(event.start.dateTime),
+                  "America/Los_Angeles"
+                ),
+                "ha zzz",
+                { timeZone: "America/Los_Angeles" }
+              ),
+              date: format(new Date(event.start.dateTime), "MMM do"),
+            };
+          });
         } catch (error) {
           console.error(error);
           return null;
@@ -118,21 +138,39 @@ const createResolvers = (pubsub) => {
       },
     },
     Channel: {
-      nextStream: async () => {
-        const today = new Date();
-        const weeksEnd = startOfDay(addWeeks(today, 1));
+      currentStream: async () => {
+        const now = new Date();
+        const start = subHours(now, 2);
+        const end = addHours(now, 2);
 
         const URL = `https://www.googleapis.com/calendar/v3/calendars/${
           process.env.GOOGLE_CALENDAR_ID
         }/events?key=${
           process.env.GOOGLE_API_KEY
-        }&orderBy=startTime&singleEvents=true&timeMin=${today.toISOString()}&timeMax=${weeksEnd.toISOString()}&maxResults=1`;
+        }&orderBy=startTime&singleEvents=true&timeMin=${start.toISOString()}&timeMax=${end.toISOString()}&maxResults=1`;
 
         try {
           const { data: events } = await axios.get(URL);
-
           const [event] = events.items;
-          return event;
+
+          if (!event) {
+            return null;
+          }
+
+          return {
+            id: event.id,
+            title: event.summary.replace(/^.+:\s/, ""),
+            description: event.description,
+            startTime: formatWithTZ(
+              utcToZonedTime(
+                new Date(event.start.dateTime),
+                "America/Los_Angeles"
+              ),
+              "ha zzz",
+              { timeZone: "America/Los_Angeles" }
+            ),
+            date: format(new Date(event.start.dateTime), "MMM do"),
+          };
         } catch (error) {
           console.error(error);
           return null;
