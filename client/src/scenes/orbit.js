@@ -76,38 +76,24 @@ export default function OrbitScene() {
         <div
           css={{
             display: "flex",
-            height: "90%",
+            height: "88%",
             width: "100%",
             alignItems: "flex-start",
           }}
         >
           <img src={logo} css={{ width: 75 }} alt="Orbit" />
-          <div
-            css={{
-              display: "flex",
-              flex: 1,
-              height: "100%",
-            }}
-          >
-            <div
-              css={{
-                border: "3px dashed #5168C2",
-                marginTop: 20,
-                width: "100%",
-              }}
-            />
-          </div>
         </div>
         <div
           css={{
             width: "100%",
             paddingLeft: "75px",
             paddingRight: "1.2rem",
-            height: "10%",
+            height: "12%",
             display: "flex",
             alignItems: "stretch",
             justifyContent: "space-between",
             marginTop: "auto",
+            // background: "red",
           }}
         >
           <div
@@ -115,7 +101,7 @@ export default function OrbitScene() {
               width: "50%",
               display: "flex",
               justifyContent: "flex-start",
-              alignItems: "stretch",
+              alignItems: "flex-start",
               paddingTop: ".8rem",
               paddingBottom: ".8rem",
             }}
