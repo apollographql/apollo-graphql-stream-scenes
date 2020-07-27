@@ -72,8 +72,20 @@ const createResolvers = (pubsub) => {
 
         try {
           const { data: events } = await axios.get(URL);
+          const streamEvents = events.items.filter((event) => {
+            if (
+              event.summary.includes("Mission Briefing") ||
+              event.summary.includes("Launch Pad") ||
+              event.summary.includes("Orbit")
+            ) {
+              return true;
+            }
 
-          return events.items.map((event) => {
+            return false;
+          });
+
+          return streamEvents.map((event) => {
+            console.log(event);
             return {
               id: event.id,
               title: event.summary.replace(/^.+:\s/, ""),
