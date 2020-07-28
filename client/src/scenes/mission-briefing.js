@@ -135,7 +135,6 @@ export default function MissionBriefingScene() {
                     fontWeight: 600,
                     letterSpacing: 1.2,
                     fontSize: 24,
-                    marginBottom: "auto",
                   }}
                 >
                   {channel.currentStream.streamers.join(" / ")}
