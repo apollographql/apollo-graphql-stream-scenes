@@ -122,7 +122,6 @@ export default function MissionBriefingScene() {
                   fontSize: "2.5rem",
                   fontWeight: 800,
                   marginBottom: 8,
-                  marginTop: "auto",
                 }}
               >
                 {channel?.currentStream
