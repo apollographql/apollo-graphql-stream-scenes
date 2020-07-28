@@ -101,7 +101,7 @@ export default function MissionBriefingScene() {
               css={{
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "space-around",
+                justifyContent: "center",
               }}
             >
               <h5
@@ -109,7 +109,7 @@ export default function MissionBriefingScene() {
                   fontFamily: "Source Sans Pro",
                   fontSize: "1.5rem",
                   fontWeight: 800,
-                  marginBottom: 8,
+                  marginBottom: 4,
                   color: "#7ED9A4",
                   letterSpacing: ".5rem",
                 }}
