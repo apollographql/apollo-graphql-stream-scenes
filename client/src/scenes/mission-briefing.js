@@ -43,6 +43,7 @@ export default function MissionBriefingScene() {
 
             // here we return an undefined value so framer-motion can run an exit animation
             yield undefined;
+
             // there is a 1 second pause between streams
             await new Promise((resolve) => setTimeout(resolve, 1000));
           }

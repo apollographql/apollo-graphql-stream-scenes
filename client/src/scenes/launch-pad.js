@@ -3,8 +3,7 @@ import { jsx } from "@emotion/core";
 import { FaTwitch } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
-import bg from "../images/launch-pad-bg.svg";
-import logo from "../images/launch-pad-logo.svg";
+import bg from "../images/apollo-bg.svg";
 import Chat from "../components/chat";
 import Follow from "../components/follow";
 import useChannel from "../hooks/channel";
@@ -12,7 +11,7 @@ import useCurrentViewers from "../hooks/current-viewer-count";
 import useUpcomingStreams from "../hooks/upcoming-streams";
 import { useValue } from "@repeaterjs/react-hooks";
 
-export default function LaunchPadScene() {
+export default function MissionBriefingScene() {
   const channel = useChannel();
   const userCount = useCurrentViewers();
   const upcomingStreams = useUpcomingStreams();
@@ -44,6 +43,7 @@ export default function LaunchPadScene() {
 
             // here we return an undefined value so framer-motion can run an exit animation
             yield undefined;
+
             // there is a 1 second pause between streams
             await new Promise((resolve) => setTimeout(resolve, 1000));
           }
@@ -58,10 +58,10 @@ export default function LaunchPadScene() {
       css={{
         width: "100vw",
         height: "100vh",
-        backgroundColor: "#F59140",
+        backgroundColor: "#ffffff",
         backgroundImage: `URL(${bg})`,
-        backgroundSize: "75px 75px",
-        backgroundBlendMode: "overlay",
+        backgroundSize: "100px 100px",
+        // backgroundBlendMode: "overlay",
       }}
     >
       <div
@@ -75,24 +75,17 @@ export default function LaunchPadScene() {
       >
         <div
           css={{
-            display: "flex",
-            height: "88%",
             width: "100%",
-            alignItems: "flex-start",
-          }}
-        >
-          <img src={logo} css={{ width: 75 }} alt="Orbit" />
-        </div>
-        <div
-          css={{
-            width: "100%",
-            paddingLeft: "75px",
-            paddingRight: "1.2rem",
-            height: "12%",
+            paddingLeft: "2rem",
+            paddingRight: "2rem",
+            height: "20%",
             display: "flex",
             alignItems: "stretch",
             justifyContent: "space-between",
             marginTop: "auto",
+            backgroundColor: "#242C3E",
+            color: "#ffffff",
+            borderTop: "5px solid #F59140",
           }}
         >
           <div
@@ -109,8 +102,21 @@ export default function LaunchPadScene() {
               css={{
                 display: "flex",
                 flexDirection: "column",
+                justifyContent: "center",
               }}
             >
+              <h5
+                css={{
+                  fontFamily: "Source Sans Pro",
+                  fontSize: "1.5rem",
+                  fontWeight: 800,
+                  marginBottom: 4,
+                  color: "#F59140",
+                  letterSpacing: ".5rem",
+                }}
+              >
+                LAUNCH PAD
+              </h5>
               <h1
                 css={{
                   fontFamily: "Source Sans Pro",
@@ -172,14 +178,15 @@ export default function LaunchPadScene() {
             width: "100%",
             paddingTop: 2,
             paddingBottom: 2,
-            backgroundColor: "#FFC18F",
+            backgroundColor: "#3B4662",
+            color: "#F59140",
           }}
         >
           <div
             css={{
               display: "flex",
               alignItems: "center",
-              paddingLeft: "75px",
+              paddingLeft: "2rem",
             }}
           >
             {typeof userCount !== "undefined" && (
@@ -192,7 +199,7 @@ export default function LaunchPadScene() {
                   fontWeight: 700,
                   paddingRight: 8,
                   marginRight: 6,
-                  borderRight: "2px solid #F59140",
+                  borderRight: "2px solid #242C3E",
                 }}
               >
                 <FaTwitch css={{ marginRight: 4, marginTop: 3 }} /> {userCount}
