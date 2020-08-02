@@ -83,7 +83,7 @@ export default function MissionBriefingScene() {
             alignItems: "stretch",
             justifyContent: "space-between",
             marginTop: "auto",
-            backgroundColor: "#242C3E",
+            backgroundColor: "#060F2F",
             color: "#ffffff",
             borderTop: "5px solid #7A92F0",
           }}
@@ -178,7 +178,7 @@ export default function MissionBriefingScene() {
             width: "100%",
             paddingTop: 2,
             paddingBottom: 2,
-            backgroundColor: "#3B4662",
+            backgroundColor: "#3D4B6A",
             color: "#7A92F0",
           }}
         >
@@ -199,7 +199,7 @@ export default function MissionBriefingScene() {
                   fontWeight: 700,
                   paddingRight: 8,
                   marginRight: 6,
-                  borderRight: "2px solid #242C3E",
+                  borderRight: "2px solid #060F2F",
                 }}
               >
                 <FaTwitch css={{ marginRight: 4, marginTop: 3 }} /> {userCount}
