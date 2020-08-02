@@ -207,7 +207,9 @@ export default function MissionBriefingScene() {
             )}
             {upcomingStreams ? (
               <div css={{ display: "flex", fontFamily: "Source Sans Pro" }}>
-                <span css={{ marginRight: 4 }}>Upcoming Streams:</span>
+                <span css={{ marginRight: 4, fontWeight: 600 }}>
+                  Upcoming Streams:
+                </span>
                 <AnimatePresence>
                   {upcomingStream && (
                     <motion.h5
