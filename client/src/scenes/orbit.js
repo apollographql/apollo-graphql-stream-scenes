@@ -115,7 +115,7 @@ export default function MissionBriefingScene() {
                   letterSpacing: ".5rem",
                 }}
               >
-                LAUNCH PAD
+                ORBIT
               </h5>
               <h1
                 css={{
