@@ -178,7 +178,7 @@ export default function MissionBriefingScene() {
             width: "100%",
             paddingTop: 2,
             paddingBottom: 2,
-            backgroundColor: "#3D4B6A",
+            backgroundColor: "#1b2240",
             color: "#7A92F0",
           }}
         >
