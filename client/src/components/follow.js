@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import useFollows from "../hooks/follows";
 import followSound from "../sounds/pixie.mp3";
-import followImg from "../images/follow.png";
+import followImg from "../images/follow.gif";
 
 export default function NewFollowers() {
   const follower = useFollows();

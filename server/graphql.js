@@ -85,7 +85,6 @@ const createResolvers = (pubsub) => {
           });
 
           return streamEvents.map((event) => {
-            console.log(event);
             return {
               id: event.id,
               title: event.summary.replace(/^.+:\s/, ""),
