@@ -85,7 +85,7 @@ export default function MissionBriefingScene() {
             marginTop: "auto",
             backgroundColor: "#060F2F",
             color: "#ffffff",
-            borderTop: "5px solid #F59140",
+            borderTop: "8px solid #F59140",
           }}
         >
           <div
