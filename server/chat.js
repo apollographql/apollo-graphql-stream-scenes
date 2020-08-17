@@ -28,6 +28,7 @@ const createChatClient = (pubsub) => {
   });
 
   client.on("message", (channel, tags, message, self) => {
+    console.log(self);
     if (self) return;
     let emotes = null;
 
@@ -56,7 +57,7 @@ const createChatClient = (pubsub) => {
     pubsub.publish(CHAT_MESSAGE, { chat: response });
 
     if (message.match(/^!/)) {
-      const commandResult = COMMANDS_MAP[message];
+      const commandResult = COMMANDS_MAP[message.toLowerCase()];
 
       if (!commandResult) {
         client.say(channel, "Command not found");
