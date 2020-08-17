@@ -2,6 +2,11 @@ const tmi = require("tmi.js");
 
 const CHAT_MESSAGE = "CHAT_MESSAGE";
 const RAID = "RAID";
+const COMMANDS_MAP = {
+  "!uses": "https://theworst.dev/uses",
+  "!schedule": "https://go.apollo.dev/events-calendar",
+  "!coc": "https://www.apollographql.com/docs/community/code-of-conduct/",
+};
 
 const createChatClient = (pubsub) => {
   const client = new tmi.Client({
@@ -51,11 +56,23 @@ const createChatClient = (pubsub) => {
     pubsub.publish(CHAT_MESSAGE, { chat: response });
 
     if (message.match(/^!/)) {
-      client.say(channel, "Command found");
+      const commandResult = COMMANDS_MAP[message];
+
+      if (!commandResult) {
+        client.say(channel, "Command not found");
+        const commandResponse = {
+          displayName: "ApolloGraphQL",
+          message: "Command not found",
+          emotes: [],
+        };
+        pubsub.publish(CHAT_MESSAGE, { chat: commandResponse });
+      }
+
+      client.say(channel, commandResult);
 
       const commandResponse = {
         displayName: "ApolloGraphQL",
-        message: "Command Found",
+        message: commandResult,
         emotes: [],
       };
 
