@@ -28,7 +28,6 @@ const createChatClient = (pubsub) => {
   });
 
   client.on("message", (channel, tags, message, self) => {
-    console.log(self);
     if (self) return;
     let emotes = null;
 
@@ -71,7 +70,6 @@ const createChatClient = (pubsub) => {
       }
 
       client.say(channel, commandResult);
-
       const commandResponse = {
         displayName: "ApolloGraphQL",
         message: commandResult,
