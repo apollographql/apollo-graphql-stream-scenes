@@ -66,6 +66,7 @@ const createChatClient = (pubsub) => {
           emotes: [],
         };
         pubsub.publish(CHAT_MESSAGE, { chat: commandResponse });
+        return;
       }
 
       client.say(channel, commandResult);
