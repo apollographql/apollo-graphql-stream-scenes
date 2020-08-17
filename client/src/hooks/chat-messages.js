@@ -6,7 +6,6 @@ const CHAT_SUBSCRIPTION = gql`
     chat {
       displayName
       message
-      color
       emotes
     }
   }
@@ -35,8 +34,6 @@ const parseEmotes = (emotes, message) => {
     const ending = mem.substring(parseInt(end, 10) + 1);
     const updated = `${beginning}${image}${ending}`;
 
-    console.log({ start, end, beginning, ending, updated });
-
     return updated;
   }, message);
 
@@ -56,6 +53,7 @@ export default function useChatMessages() {
           message = parseEmotes(data.chat.emotes, message);
         }
 
+        console.log(message);
         setMessages([...messages, { ...data.chat, message }]);
       },
     });

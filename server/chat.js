@@ -22,7 +22,7 @@ const createChatClient = (pubsub) => {
     pubsub.publish(RAID, { raid: { username, viewers } });
   });
 
-  client.on("message", (_, tags, message, self) => {
+  client.on("message", (channel, tags, message, self) => {
     if (self) return;
     let emotes = null;
 
@@ -46,10 +46,21 @@ const createChatClient = (pubsub) => {
       emotes,
       message,
       displayName: tags["display-name"],
-      color: tags["color"],
     };
 
     pubsub.publish(CHAT_MESSAGE, { chat: response });
+
+    if (message.match(/^!/)) {
+      client.say(channel, "Command found");
+
+      const commandResponse = {
+        displayName: "ApolloGraphQL",
+        message: "Command Found",
+        emotes: [],
+      };
+
+      pubsub.publish(CHAT_MESSAGE, { chat: commandResponse });
+    }
   });
 };
 

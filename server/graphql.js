@@ -36,7 +36,6 @@ const typeDefs = gql`
   type ChatMessage {
     displayName: String!
     message: String!
-    color: String
     emotes: [[String!]!]
   }
 
