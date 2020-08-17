@@ -60,19 +60,24 @@ const createChatClient = (pubsub) => {
 
       if (!commandResult) {
         client.say(channel, "Command not found");
-
+        const commandResponse = {
+          displayName: "ApolloGraphQL",
+          message: "Command not found",
+          emotes: [],
+        };
+        pubsub.publish(CHAT_MESSAGE, { chat: commandResponse });
         return;
       }
 
       client.say(channel, commandResult);
 
-      // const commandResponse = {
-      //   displayName: "ApolloGraphQL",
-      //   message: commandResult,
-      //   emotes: [],
-      // };
+      const commandResponse = {
+        displayName: "ApolloGraphQL",
+        message: commandResult,
+        emotes: [],
+      };
 
-      // pubsub.publish(CHAT_MESSAGE, { chat: commandResponse });
+      pubsub.publish(CHAT_MESSAGE, { chat: commandResponse });
     }
   });
 };
