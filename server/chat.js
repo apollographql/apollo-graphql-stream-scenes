@@ -8,6 +8,32 @@ const COMMANDS_MAP = {
   "!coc": "https://www.apollographql.com/docs/community/code-of-conduct/",
 };
 
+const buildResponse = (message, tags) => {
+  let emotes = null;
+
+  const emoteObj = tags["emotes"];
+
+  if (emoteObj) {
+    emotes = Object.keys(emoteObj).reduce((arr, emoteCode) => {
+      const instances = emoteObj[emoteCode];
+
+      const codesWithStartEnd = instances.map((instance) => {
+        const [start, end] = instance.split("-");
+
+        return [emoteCode, start, end];
+      });
+
+      return [...arr, ...codesWithStartEnd];
+    }, []);
+  }
+
+  return {
+    emotes,
+    message,
+    displayName: tags["display-name"],
+  };
+};
+
 const createChatClient = (pubsub) => {
   const client = new tmi.Client({
     connection: {
@@ -27,32 +53,18 @@ const createChatClient = (pubsub) => {
     pubsub.publish(RAID, { raid: { username, viewers } });
   });
 
+  let commandIssued = false;
   client.on("message", (channel, tags, message, self) => {
-    if (self) return;
-    let emotes = null;
-
-    const emoteObj = tags["emotes"];
-
-    if (emoteObj) {
-      emotes = Object.keys(emoteObj).reduce((arr, emoteCode) => {
-        const instances = emoteObj[emoteCode];
-
-        const codesWithStartEnd = instances.map((instance) => {
-          const [start, end] = instance.split("-");
-
-          return [emoteCode, start, end];
-        });
-
-        return [...arr, ...codesWithStartEnd];
-      }, []);
+    if (self) {
+      if (commandIssued) {
+        const response = buildResponse(message, tags);
+        pubsub.publish(CHAT_MESSAGE, { chat: response });
+        commandIssued = false;
+      }
+      return;
     }
 
-    const response = {
-      emotes,
-      message,
-      displayName: tags["display-name"],
-    };
-
+    const response = buildResponse(message, tags);
     pubsub.publish(CHAT_MESSAGE, { chat: response });
 
     if (message.match(/^!/)) {
@@ -60,23 +72,12 @@ const createChatClient = (pubsub) => {
 
       if (!commandResult) {
         client.say(channel, "Command not found");
-        const commandResponse = {
-          displayName: "ApolloGraphQL",
-          message: "Command not found",
-          emotes: [],
-        };
-        pubsub.publish(CHAT_MESSAGE, { chat: commandResponse });
+        commandIssued = true;
         return;
       }
 
       client.say(channel, commandResult);
-      const commandResponse = {
-        displayName: "ApolloGraphQL",
-        message: commandResult,
-        emotes: [],
-      };
-
-      pubsub.publish(CHAT_MESSAGE, { chat: commandResponse });
+      commandIssued = true;
     }
   });
 };
