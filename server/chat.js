@@ -79,7 +79,7 @@ const createChatClient = (pubsub) => {
       pubsub.publish(CHAT_MESSAGE, {
         chat: {
           message: commandResult,
-          displayName: tags["display-name"],
+          displayName: process.env.CHANNEL,
         },
       });
     } else {
