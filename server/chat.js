@@ -8,6 +8,8 @@ const COMMANDS_MAP = {
   "!coc": "https://www.apollographql.com/docs/community/code-of-conduct/",
 };
 
+const sleep = time => new Promise((res) => setTimeout(res, time))
+
 const buildResponse = (message, tags) => {
   let emotes = null;
 
@@ -76,6 +78,7 @@ const createChatClient = (pubsub) => {
       }
 
       client.say(channel, commandResult);
+      await sleep(1000)
       pubsub.publish(CHAT_MESSAGE, {
         chat: {
           message: commandResult,
