@@ -58,6 +58,9 @@ const createChatClient = (pubsub) => {
       return;
     }
 
+    const response = buildResponse(message, tags);
+    pubsub.publish(CHAT_MESSAGE, { chat: response });
+
     if (message.match(/^!/)) {
       const commandResult = COMMANDS_MAP[message.toLowerCase()];
 
@@ -71,9 +74,6 @@ const createChatClient = (pubsub) => {
         });
         return;
       }
-
-      const response = buildResponse(message, tags);
-      pubsub.publish(CHAT_MESSAGE, response);
 
       client.say(channel, commandResult);
       pubsub.publish(CHAT_MESSAGE, {
