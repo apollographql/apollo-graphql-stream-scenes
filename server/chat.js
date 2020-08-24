@@ -6,6 +6,8 @@ const COMMANDS_MAP = {
   "!uses": "https://theworst.dev/uses",
   "!schedule": "https://go.apollo.dev/events-calendar",
   "!coc": "https://www.apollographql.com/docs/community/code-of-conduct/",
+  "!discord": "https://go.apollo.dev/discord",
+  "!docs": "https://apollo.dev",
 };
 
 const sleep = (time) => new Promise((res) => setTimeout(res, time));
