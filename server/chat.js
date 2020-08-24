@@ -55,12 +55,14 @@ const createChatClient = (pubsub) => {
 
   let commandIssued = false;
   client.on("message", (channel, tags, message, self) => {
+    if (commandIssued) {
+      const response = buildResponse(message, tags);
+      pubsub.publish(CHAT_MESSAGE, { chat: response });
+      commandIssued = false;
+      return;
+    }
+
     if (self) {
-      if (commandIssued) {
-        const response = buildResponse(message, tags);
-        pubsub.publish(CHAT_MESSAGE, { chat: response });
-        commandIssued = false;
-      }
       return;
     }
 
