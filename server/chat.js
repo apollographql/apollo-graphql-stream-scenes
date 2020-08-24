@@ -53,33 +53,25 @@ const createChatClient = (pubsub) => {
     pubsub.publish(RAID, { raid: { username, viewers } });
   });
 
-  let commandIssued = false;
   client.on("message", (channel, tags, message, self) => {
-    if (commandIssued) {
-      const response = buildResponse(message, tags);
-      pubsub.publish(CHAT_MESSAGE, { chat: response });
-      commandIssued = false;
-      return;
-    }
-
     if (self) {
       return;
     }
-
-    const response = buildResponse(message, tags);
-    pubsub.publish(CHAT_MESSAGE, { chat: response });
 
     if (message.match(/^!/)) {
       const commandResult = COMMANDS_MAP[message.toLowerCase()];
 
       if (!commandResult) {
         client.say(channel, "Command not found");
-        commandIssued = true;
+        pubsub.publish(CHAT_MESSAGE, { chat: "Command not found" });
         return;
       }
 
       client.say(channel, commandResult);
-      commandIssued = true;
+      pubsub.publish(CHAT_MESSAGE, { chat: commandResult });
+    } else {
+      const response = buildResponse(message, tags);
+      pubsub.publish(CHAT_MESSAGE, { chat: response });
     }
   });
 };
