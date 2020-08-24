@@ -78,7 +78,7 @@ const createChatClient = (pubsub) => {
       }
 
       client.say(channel, commandResult);
-      await sleep(1000);
+      await sleep(500);
       pubsub.publish(CHAT_MESSAGE, {
         chat: {
           message: commandResult,
