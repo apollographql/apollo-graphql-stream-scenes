@@ -63,12 +63,22 @@ const createChatClient = (pubsub) => {
 
       if (!commandResult) {
         client.say(channel, "Command not found");
-        pubsub.publish(CHAT_MESSAGE, { chat: "Command not found" });
+        pubsub.publish(CHAT_MESSAGE, {
+          chat: {
+            message: "Command not found",
+            displayName: tags["display-name"],
+          },
+        });
         return;
       }
 
       client.say(channel, commandResult);
-      pubsub.publish(CHAT_MESSAGE, { chat: commandResult });
+      pubsub.publish(CHAT_MESSAGE, {
+        chat: {
+          message: commandResult,
+          displayName: tags["display-name"],
+        },
+      });
     } else {
       const response = buildResponse(message, tags);
       pubsub.publish(CHAT_MESSAGE, { chat: response });
