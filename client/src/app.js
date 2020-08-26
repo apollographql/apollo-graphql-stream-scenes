@@ -5,6 +5,7 @@ import { Router } from "@reach/router";
 import MissionBriefing from "./scenes/mission-briefing";
 import LaunchPad from "./scenes/launch-pad";
 import Orbit from "./scenes/orbit";
+import RestrictedArea from "./scenes/restricted-area";
 import Chat from "./overlays/chat";
 import Follows from "./overlays/new-follows";
 import CurrentViewerCount from "./overlays/current-viewer-count";
@@ -15,6 +16,7 @@ function App() {
       <MissionBriefing path="/mission-briefing" />
       <LaunchPad path="/launch-pad" />
       <Orbit path="/orbit" />
+      <RestrictedArea path="/restricted-area" />
       <Chat path="/chat" />
       <Follows path="/follows" />
       <CurrentViewerCount path="/current-viewer-count" />
