@@ -31,6 +31,7 @@ export default function MissionBriefingScene() {
             marginBottom: "24px",
           }}
           src={restricted}
+          alt="restricted area"
         />
         <h1
           css={{
