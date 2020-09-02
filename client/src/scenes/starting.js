@@ -203,7 +203,7 @@ export default function MissionBriefingScene() {
                 alignItems: "flex-start",
                 fontSize: "1.2rem",
                 fontFamily: "Source Sans Pro",
-                fontWeight: 600,
+                fontWeight: 500,
                 paddingRight: 8,
                 marginRight: 6,
                 borderRight: "2px solid #060F2F",
