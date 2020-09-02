@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import { FaTwitch } from "react-icons/fa";
+import { FaTwitch, FaDiscord } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
 import bg from "../images/apollo-bg.svg";
@@ -197,6 +197,21 @@ export default function MissionBriefingScene() {
                 <FaTwitch css={{ marginRight: 4, marginTop: 3 }} /> {userCount}
               </h5>
             )}
+            <h5
+              css={{
+                display: "flex",
+                alignItems: "flex-start",
+                fontSize: "1.2rem",
+                fontFamily: "Source Sans Pro",
+                fontWeight: 600,
+                paddingRight: 8,
+                marginRight: 6,
+                borderRight: "2px solid #060F2F",
+              }}
+            >
+              <FaDiscord css={{ marginRight: 4, marginTop: 3 }} />{" "}
+              {"go.apollo.dev/discord"}
+            </h5>
             {upcomingStreams ? (
               <div css={{ display: "flex", fontFamily: "Source Sans Pro" }}>
                 <span css={{ marginRight: 4, fontWeight: 600 }}>
