@@ -8,6 +8,8 @@ const COMMANDS_MAP = {
   "!coc": "https://www.apollographql.com/docs/community/code-of-conduct/",
   "!discord": "https://go.apollo.dev/discord",
   "!docs": "https://apollo.dev",
+  "!lp-project":
+    "Trevor and Kurt are building Jam Spam! A collaborative sound board app built with GatsbyJS, Apollo Client, and Apollo Server. Some things they'll cover are subscriptions, fragments, and the useSound hook.",
 };
 
 const sleep = (time) => new Promise((res) => setTimeout(res, time));
