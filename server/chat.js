@@ -75,7 +75,7 @@ const createChatClient = (pubsub) => {
     const response = buildResponse(message, tags);
     pubsub.publish(CHAT_MESSAGE, { chat: response });
 
-    if (message.match(/^!/)) {
+    if (message.match(/^[!|--]/)) {
       const commandResult = COMMANDS_MAP[message.toLowerCase()];
 
       if (!commandResult) {
