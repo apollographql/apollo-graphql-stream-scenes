@@ -9,11 +9,13 @@ const COMMANDS_MAP = {
   "!discord": "https://go.apollo.dev/discord",
   "!docs": "https://apollo.dev",
   "!lp-project":
-    "Trevor and Kurt are building Jam Spam! A collaborative sound board app built with GatsbyJS, Apollo Client, and Apollo Server. Some things they'll cover are subscriptions, fragments, and the useSound hook.",
+    "Trevor and Kurt are building Jam Spam! A collaborative sound board app built with GatsbyJS, Apollo Client, and Apollo Server. Some things they'll cover are subscriptions, fragments, and the useSound hook.\nhttps://github.com/kkemple/jamspam",
   "!music":
     "https://open.spotify.com/playlist/4kAqBBEZQsBIXMIJl6u8tO?si=yTuT421KRbu05kcLIMWYWg",
   "!playlist":
     "https://open.spotify.com/playlist/4kAqBBEZQsBIXMIJl6u8tO?si=yTuT421KRbu05kcLIMWYWg",
+  "!commands":
+    "!uses, !schedule, !coc, !discord, !docs, !lp-project, !music, !playlist (alias)",
 };
 
 const sleep = (time) => new Promise((res) => setTimeout(res, time));
