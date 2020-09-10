@@ -16,6 +16,8 @@ const COMMANDS_MAP = {
     "https://open.spotify.com/playlist/4kAqBBEZQsBIXMIJl6u8tO?si=yTuT421KRbu05kcLIMWYWg",
   "!commands":
     "!uses, !schedule, !coc, !discord, !docs, !lp-project, !music, !playlist (alias)",
+  "--help":
+    "!uses, !schedule, !coc, !discord, !docs, !lp-project, !music, !playlist (alias)",
 };
 
 const sleep = (time) => new Promise((res) => setTimeout(res, time));
