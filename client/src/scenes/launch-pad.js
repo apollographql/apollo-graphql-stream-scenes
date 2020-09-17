@@ -44,7 +44,7 @@ export default function MissionBriefingScene() {
 
   useEffect(() => {
     play({ id: sound });
-  }, [sound]);
+  }, [sound, play]);
 
   // use a generator to produce an upcoming stream
   const upcomingStream = useValue(
