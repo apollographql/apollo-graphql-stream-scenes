@@ -2,12 +2,17 @@ const tmi = require("tmi.js");
 
 const CHAT_MESSAGE = "CHAT_MESSAGE";
 const RAID = "RAID";
+const SOUND_PLAYED = "SOUND_PLAYED";
 const COMMANDS_MAP = {
   "!uses": "https://theworst.dev/uses",
   "!schedule": "https://go.apollo.dev/events-calendar",
   "!coc": "https://www.apollographql.com/docs/community/code-of-conduct/",
   "!discord": "https://go.apollo.dev/discord",
   "!docs": "https://apollo.dev",
+  "!bop": "playSound",
+  "!horn": "playSound",
+  "!zap": "playSound",
+  "!woosh": "playSound",
   "!lp-project":
     "Trevor and Kurt are building Jam Spam! A collaborative sound board app built with GatsbyJS, Apollo Client, and Apollo Server. Some things they'll cover are subscriptions, fragments, and the useSound hook.\nhttps://github.com/kkemple/jamspam",
   "!music":
@@ -89,12 +94,19 @@ const createChatClient = (pubsub) => {
         return;
       }
 
-      client.say(channel, commandResult);
+      if (commandResult === "playSound") {
+        pubsub.publish(SOUND_PLAYED, {
+          sound: { type: message.replace("!", "") },
+        });
+      } else {
+        client.say(channel, commandResult);
+      }
+
       await sleep(500);
       pubsub.publish(CHAT_MESSAGE, {
         chat: {
           message: commandResult,
-          displayName: process.env.CHANNEL,
+          displayName: "apollobot",
         },
       });
     } else {

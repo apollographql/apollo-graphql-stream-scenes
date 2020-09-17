@@ -1,9 +1,13 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
+import { useEffect } from "react";
 import { FaTwitch, FaDiscord } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import useSound from "use-sound";
 
 import bg from "../images/apollo-bg.svg";
+import soundSprite from "../sounds/sprite.m4a";
+import useSoundCommands from "../hooks/sounds";
 import Chat from "../components/chat";
 import Follow from "../components/follow";
 import useChannel from "../hooks/channel";
@@ -11,10 +15,36 @@ import useCurrentViewers from "../hooks/current-viewer-count";
 import useUpcomingStreams from "../hooks/upcoming-streams";
 import { useValue } from "@repeaterjs/react-hooks";
 
+const durations = {
+  zap: 1804,
+  woosh: 426,
+  horn: 648, // shoutout @Talk2MeGooseman
+  bop: 177,
+};
+
+const sprite = Object.entries(durations).reduce(
+  (acc, [key, duration], index, array) => ({
+    ...acc,
+    [key]: [
+      array.slice(0, index).reduce((total, item) => total + item[1], 0),
+      duration,
+    ],
+  }),
+  // need to supply a default key to prevent this issue:
+  // https://github.com/goldfire/howler.js/issues/851
+  { __default: [0, 0] }
+);
+
 export default function MissionBriefingScene() {
   const channel = useChannel();
   const userCount = useCurrentViewers();
   const upcomingStreams = useUpcomingStreams();
+  const [play] = useSound(soundSprite, { sprite });
+  const sound = useSoundCommands();
+
+  useEffect(() => {
+    play({ id: sound });
+  }, [sound]);
 
   // use a generator to produce an upcoming stream
   const upcomingStream = useValue(
