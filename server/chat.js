@@ -1,9 +1,18 @@
 const tmi = require("tmi.js");
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: "apollographql",
+  api_key: process.env.CLOUDINARY_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
+});
 
 const CHAT_MESSAGE = "CHAT_MESSAGE";
 const RAID = "RAID";
 const SOUND_PLAYED = "SOUND_PLAYED";
+const DISPLAY_MEME = "DISPLAY_MEME";
 const COMMANDS_MAP = {
+  "!meme": "generateMeme",
   "!uses": "https://theworst.dev/uses",
   "!schedule": "https://go.apollo.dev/events-calendar",
   "!coc": "https://www.apollographql.com/docs/community/code-of-conduct/",
@@ -14,7 +23,7 @@ const COMMANDS_MAP = {
   "!zap": "playSound",
   "!woosh": "playSound",
   "!lp-project":
-    "Trevor and Kurt are building Jam Spam! A collaborative sound board app built with GatsbyJS, Apollo Client, and Apollo Server. Some things they'll cover are subscriptions, fragments, and the useSound hook.\nhttps://github.com/kkemple/jamspam",
+    "Trevor and Kurt are building a Twitch chat meme integration so you can spam the stream with MEMES.\nhttps://github.com/kkemple/apollo-stream-scenes",
   "!music":
     "https://open.spotify.com/playlist/4kAqBBEZQsBIXMIJl6u8tO?si=yTuT421KRbu05kcLIMWYWg",
   "!playlist":
@@ -23,6 +32,11 @@ const COMMANDS_MAP = {
     "Here are all the available commands: !uses, !schedule, !coc, !discord, !docs, !lp-project, !music, !playlist (alias)",
   "--help":
     "Here are all the available commands: !uses, !schedule, !coc, !discord, !docs, !lp-project, !music, !playlist (alias)",
+};
+
+const memeMap = {
+  tothestars: "IMG_20200302_203929_1_encign.jpg",
+  groinshot: "ezgif-6-b472badd75c7_iteboa.gif",
 };
 
 const sleep = (time) => new Promise((res) => setTimeout(res, time));
@@ -81,25 +95,71 @@ const createChatClient = (pubsub) => {
     pubsub.publish(CHAT_MESSAGE, { chat: response });
 
     if (message.match(/^(!|--)/)) {
-      const commandResult = COMMANDS_MAP[message.toLowerCase()];
+      const [command] = message.split(" ");
+      const commandResult = COMMANDS_MAP[command.toLowerCase()];
 
       if (!commandResult) {
-        client.say(channel, "Command not found");
-        pubsub.publish(CHAT_MESSAGE, {
-          chat: {
-            message: "Command not found",
-            displayName: process.env.CHANNEL,
-          },
-        });
+        // client.say(channel, "Command not found");
+        // pubsub.publish(CHAT_MESSAGE, {
+        //   chat: {
+        //     message: "Command not found",
+        //     displayName: process.env.CHANNEL,
+        //   },
+        // });
         return;
       }
 
-      if (commandResult === "playSound") {
-        pubsub.publish(SOUND_PLAYED, {
-          sound: { type: message.replace("!", "") },
-        });
-      } else {
-        client.say(channel, commandResult);
+      switch (commandResult) {
+        case "playSound":
+          pubsub.publish(SOUND_PLAYED, {
+            sound: { type: message.replace("!", "") },
+          });
+          break;
+        case "generateMeme": {
+          const [, template, ...text] = message.split(" ");
+          const imageUrl = memeMap[template];
+
+          if (!imageUrl) {
+            client.say(
+              channel,
+              `Invalid meme template! Try these: ${Object.keys(memeMap).join(
+                ", "
+              )}`
+            );
+            break;
+          }
+
+          const meme = cloudinary.url(imageUrl, {
+            transformation: [
+              {
+                gravity: "south",
+                y: 80,
+                color: "#fff",
+                overlay: {
+                  font_family: "Impact",
+                  font_size: 48,
+                  text: text.join(" ").toUpperCase(),
+                },
+              },
+              {
+                gravity: "south_west",
+                color: "#fff",
+                y: 5,
+                x: 5,
+                overlay: {
+                  font_family: "Arial",
+                  font_size: 20,
+                  text: "@ApolloGraphQL",
+                },
+              },
+            ],
+          });
+
+          pubsub.publish(DISPLAY_MEME, { meme });
+          break;
+        }
+        default:
+          client.say(channel, commandResult);
       }
 
       await sleep(500);

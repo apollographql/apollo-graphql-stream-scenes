@@ -31,7 +31,7 @@ export default function NewFollowers() {
         setPlaybackRate(0.8);
       }, 4000);
     }
-  }, [follower, current, play, playbackRate, stale, setStale]);
+  }, [follower, current, play, playbackRate, stale, setStale, setCurrent]);
 
   return (
     <AnimatePresence>

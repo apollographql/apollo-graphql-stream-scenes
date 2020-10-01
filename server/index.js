@@ -25,9 +25,6 @@ async function main() {
     uploads: false,
     playground: true,
     introspection: true,
-    context: (context) => {
-      return { auth: { isAuthenticated: true, scope: ["test:*"] } };
-    },
   });
   server.applyMiddleware({ app });
 

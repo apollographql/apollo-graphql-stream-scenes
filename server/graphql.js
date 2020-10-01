@@ -8,6 +8,7 @@ const SUBSCRIBE = "SUBSCRIBE";
 const CHAT_MESSAGE = "CHAT_MESSAGE";
 const RAID = "RAID";
 const SOUND_PLAYED = "SOUND_PLAYED";
+const DISPLAY_MEME = "DISPLAY_MEME";
 
 const typeDefs = gql`
   type Query {
@@ -51,16 +52,13 @@ const typeDefs = gql`
     gifterName: String
   }
 
-  type Sound {
-    type: String!
-  }
-
   type Subscription {
     chat: ChatMessage!
     follow: String!
     sub: SubscriptionMessage!
     raid: RaidMessage!
-    sound: Sound!
+    sound: String!
+    meme: String!
   }
 `;
 
@@ -140,6 +138,9 @@ const createResolvers = (pubsub) => {
       },
     },
     Subscription: {
+      meme: {
+        subscribe: () => pubsub.asyncIterator([DISPLAY_MEME]),
+      },
       chat: {
         subscribe: () => pubsub.asyncIterator([CHAT_MESSAGE]),
       },

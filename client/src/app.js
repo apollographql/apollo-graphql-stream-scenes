@@ -10,6 +10,7 @@ import Brb from "./scenes/brb";
 import Starting from "./scenes/starting";
 import Chat from "./overlays/chat";
 import Follows from "./overlays/new-follows";
+import Memes from "./overlays/memes";
 import CurrentViewerCount from "./overlays/current-viewer-count";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
       <Starting path="/starting" />
       <Chat path="/chat" />
       <Follows path="/follows" />
+      <Memes path="/memes" />
       <CurrentViewerCount path="/current-viewer-count" />
     </Router>
   );

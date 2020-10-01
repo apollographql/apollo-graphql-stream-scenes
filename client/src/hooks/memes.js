@@ -2,22 +2,22 @@ import { gql, useApolloClient } from "@apollo/client";
 import { useValue, useRepeater } from "@repeaterjs/react-hooks";
 import { useEffect } from "react";
 
-const SOUND_SUBSCRIPTION = gql`
-  subscription Sound {
-    sound
+const MEME_SUBSCRIPTION = gql`
+  subscription Meme {
+    meme
   }
 `;
 
-export default function useFollows() {
+export default function useMemes() {
   const client = useApolloClient();
-  const [sounds, push, stop] = useRepeater();
+  const [memes, push, stop] = useRepeater();
 
   useEffect(() => {
     const unsubscribe = client
-      .subscribe({ query: SOUND_SUBSCRIPTION })
+      .subscribe({ query: MEME_SUBSCRIPTION })
       .subscribe({
         next: ({ data }) => {
-          push(data.sound);
+          push(data.meme);
         },
       });
 
@@ -28,9 +28,9 @@ export default function useFollows() {
   }, [push, stop, client]);
 
   const value = useValue(async function* () {
-    for await (const sound of sounds) {
-      yield sound;
-      await new Promise((resolve) => setTimeout(resolve, 100));
+    for await (const meme of memes) {
+      yield meme;
+      await new Promise((resolve) => setTimeout(resolve, 5000));
     }
   });
 
