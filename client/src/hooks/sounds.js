@@ -29,7 +29,7 @@ export default function useFollows() {
 
   const value = useValue(async function* () {
     for await (const sound of sounds) {
-      yield sound;
+      yield { id: sound };
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
   });

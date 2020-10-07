@@ -12,9 +12,9 @@ const createWebhooks = (app, pubsub) => {
   const jsonParser = bodyParser.json();
 
   app.get("/webhooks/follows", async (req, res) => {
-    pubsub.publish(FOLLOW, {
-      follow: `theworstdev-${getRandomInt(1000)}`,
-    });
+    // pubsub.publish(FOLLOW, {
+    //   follow: `theworstdev-${getRandomInt(1000)}`,
+    // });
 
     // respond to webhook request challenge from Twitch
     res.status(200).send(req.query["hub.challenge"]);

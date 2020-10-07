@@ -31,7 +31,9 @@ export default function ChatOverlay() {
   const sound = useSoundCommands();
 
   useEffect(() => {
-    play({ id: sound });
+    if (sound) {
+      play({ id: sound.id });
+    }
   }, [sound, play]);
 
   return <div />;
