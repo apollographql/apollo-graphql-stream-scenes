@@ -160,15 +160,15 @@ const createChatClient = (pubsub) => {
         }
         default:
           client.say(channel, commandResult);
-      }
 
-      await sleep(500);
-      pubsub.publish(CHAT_MESSAGE, {
-        chat: {
-          message: commandResult,
-          displayName: "apollobot",
-        },
-      });
+          await sleep(500);
+          pubsub.publish(CHAT_MESSAGE, {
+            chat: {
+              message: commandResult,
+              displayName: "apollobot",
+            },
+          });
+      }
     } else {
       const response = buildResponse(message, tags);
       pubsub.publish(CHAT_MESSAGE, { chat: response });
