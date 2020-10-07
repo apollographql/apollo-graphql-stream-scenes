@@ -3,15 +3,29 @@ import { jsx } from "@emotion/core";
 import { FaTwitch, FaDiscord } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
-import bg from "../images/apollo-bg.svg";
-import Chat from "../components/chat";
-import Follow from "../components/follow";
-import useChannel from "../hooks/channel";
-import useCurrentViewers from "../hooks/current-viewer-count";
-import useUpcomingStreams from "../hooks/upcoming-streams";
+import canvasBg from "../../images/canvas-bg.png";
+import titleBg from "../../images/title-bg.png";
+import useChannel from "../../hooks/channel";
+import useCurrentViewers from "../../hooks/current-viewer-count";
+import useUpcomingStreams from "../../hooks/upcoming-streams";
 import { useValue } from "@repeaterjs/react-hooks";
 
-export default function MissionBriefingScene() {
+const showOptions = {
+  missionBriefing: {
+    color: "#7ED9A4",
+    title: "MISSION BRIEFING",
+  },
+  launchPad: {
+    color: "#F59140",
+    title: "LAUNCH PAD",
+  },
+  orbit: {
+    color: "#7A92F0",
+    title: "ORBIT",
+  },
+};
+
+export default function Scene({ showType }) {
   const channel = useChannel();
   const userCount = useCurrentViewers();
   const upcomingStreams = useUpcomingStreams();
@@ -58,10 +72,9 @@ export default function MissionBriefingScene() {
       css={{
         width: "100vw",
         height: "100vh",
-        backgroundColor: "#ffffff",
-        backgroundImage: `URL(${bg})`,
-        backgroundSize: "100px 100px",
-        // backgroundBlendMode: "overlay",
+        backgroundColor: "#311C87",
+        backgroundImage: `URL(${canvasBg})`,
+        backgroundRepeat: "no-repeat",
       }}
     >
       <div
@@ -78,19 +91,20 @@ export default function MissionBriefingScene() {
             width: "100%",
             paddingLeft: "2rem",
             paddingRight: "2rem",
-            height: "20%",
+            height: "18%",
             display: "flex",
             alignItems: "stretch",
             justifyContent: "space-between",
             marginTop: "auto",
-            backgroundColor: "#060F2F",
+            backgroundColor: "#311C87",
+            backgroundImage: `URL(${titleBg})`,
             color: "#ffffff",
-            borderTop: "8px solid #7ED9A4",
+            borderTop: "5px solid #3F20BA",
           }}
         >
           <div
             css={{
-              width: "50%",
+              width: "40%",
               display: "flex",
               justifyContent: "flex-start",
               alignItems: "stretch",
@@ -111,11 +125,11 @@ export default function MissionBriefingScene() {
                   fontSize: "1.5rem",
                   fontWeight: 800,
                   marginBottom: 4,
-                  color: "#7ED9A4",
+                  color: showOptions[showType].color,
                   letterSpacing: ".5rem",
                 }}
               >
-                MISSION BRIEFING
+                {showOptions[showType].title}
               </h5>
               <h1
                 css={{
@@ -127,7 +141,7 @@ export default function MissionBriefingScene() {
               >
                 {channel?.currentStream
                   ? channel.currentStream.title
-                  : "Apollo GraphQL on Twitch"}
+                  : "AMA with the Apollo Developer Experience Team"}
               </h1>
               {channel?.currentStream?.streamers.length > 0 && (
                 <h2
@@ -143,43 +157,14 @@ export default function MissionBriefingScene() {
               )}
             </div>
           </div>
-          <div
-            css={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              width: "60%",
-              paddingLeft: 24,
-            }}
-          >
-            <div
-              css={{
-                fontSize: 20,
-                flex: 1,
-              }}
-            >
-              <Follow />
-            </div>
-            <div
-              css={{
-                flex: 1,
-                fontSize: 20,
-                height: "100%",
-                overflow: "hidden",
-                paddingTop: 4,
-              }}
-            >
-              <Chat />
-            </div>
-          </div>
         </div>
         <div
           css={{
             width: "100%",
             paddingTop: 2,
             paddingBottom: 2,
-            backgroundColor: "#1b2240",
-            color: "#7ED9A4",
+            backgroundColor: "#3F20BA",
+            color: "#ffffff",
           }}
         >
           <div
@@ -199,7 +184,7 @@ export default function MissionBriefingScene() {
                   fontWeight: 700,
                   paddingRight: 8,
                   marginRight: 6,
-                  borderRight: "2px solid #060F2F",
+                  borderRight: "2px solid #311C87",
                 }}
               >
                 <FaTwitch css={{ marginRight: 4, marginTop: 3 }} /> {userCount}
@@ -214,7 +199,7 @@ export default function MissionBriefingScene() {
                 fontWeight: 500,
                 paddingRight: 8,
                 marginRight: 6,
-                borderRight: "2px solid #060F2F",
+                borderRight: "2px solid #311C87",
               }}
             >
               <FaDiscord css={{ marginRight: 4, marginTop: 3 }} />{" "}
