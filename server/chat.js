@@ -112,7 +112,7 @@ const createChatClient = (pubsub) => {
       switch (commandResult) {
         case "playSound":
           pubsub.publish(SOUND_PLAYED, {
-            sound: { type: message.replace("!", "") },
+            sound: message.replace("!", ""),
           });
           break;
         case "generateMeme": {
