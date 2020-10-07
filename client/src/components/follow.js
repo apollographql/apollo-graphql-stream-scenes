@@ -34,60 +34,74 @@ export default function NewFollowers() {
   }, [follower, current, play, playbackRate, stale, setStale, setCurrent]);
 
   return (
-    <AnimatePresence>
-      {!stale && current && (
-        <motion.div
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.5 }}
-          transition={{
-            type: "spring",
-            stiffness: 300,
-            damping: 20,
-          }}
-          css={{
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <div css={{ width: "25%", maxWidth: 100, paddingTop: 8 }}>
-            <img
-              src={followImg}
-              css={{ width: "100%", objectFit: "cover" }}
-              alt="astronaut illustration"
-            />
-          </div>
-          <div
+    <div
+      css={{
+        width: 250,
+        height: 75,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 4,
+      }}
+    >
+      <AnimatePresence>
+        {!stale && current && (
+          <motion.div
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            transition={{
+              type: "spring",
+              stiffness: 300,
+              damping: 20,
+            }}
             css={{
-              width: "75%",
-              marginLeft: 8,
               display: "flex",
-              flexDirection: "column",
+              alignItems: "center",
+              backgroundColor: "#ffffff",
+              borderRadius: 4,
+              boxShadow: "3px 3px 4px rgba(0,0,0,0.3)",
             }}
           >
-            <span
+            <div css={{ paddingLeft: 4, width: "25%", maxWidth: 100 }}>
+              <img
+                src={followImg}
+                css={{ width: "100%", objectFit: "cover" }}
+                alt="astronaut illustration"
+              />
+            </div>
+            <div
               css={{
-                fontFamily: "Source Sans Pro",
-                fontWeight: 600,
-                textTransform: "uppercase",
-                letterSpacing: 1,
-                marginBottom: 2,
-                fontSize: "80%",
+                width: "75%",
+                marginLeft: 8,
+                display: "flex",
+                flexDirection: "column",
               }}
             >
-              New Follower!
-            </span>
-            <span
-              css={{
-                fontFamily: "Source Sans Pro",
-                fontWeight: 800,
-              }}
-            >
-              {current}
-            </span>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+              <span
+                css={{
+                  fontFamily: "Source Sans Pro",
+                  fontWeight: 600,
+                  textTransform: "uppercase",
+                  letterSpacing: 1,
+                  marginBottom: 2,
+                  fontSize: "80%",
+                }}
+              >
+                New Follower!
+              </span>
+              <span
+                css={{
+                  fontFamily: "Source Sans Pro",
+                  fontWeight: 800,
+                }}
+              >
+                {current}
+              </span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }

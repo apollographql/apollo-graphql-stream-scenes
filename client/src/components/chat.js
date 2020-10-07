@@ -4,33 +4,21 @@ import { motion, AnimatePresence } from "framer-motion";
 import randomcolor from "randomcolor";
 
 import useChatMessages from "../hooks/chat-messages";
-import { useState } from "react";
 
 export default function Chat() {
-  const [usernameColors, setUsernameColors] = useState({});
   const messages = useChatMessages();
-
-  const getColorForName = ({ displayName }) => {
-    if (!usernameColors[displayName]) {
-      const userColor = randomcolor();
-      setUsernameColors({ ...usernameColors, [displayName]: userColor });
-      return userColor;
-    }
-
-    return usernameColors[displayName];
-  };
 
   return (
     <ul
       css={{
         height: "100%",
         width: "100%",
-        wordBreak: "break-word",
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-end",
         textShadow: "1px 1px rgba(0, 0, 0, 0.5)",
+        fontSize: 20,
         "& .emote": {
           marginLeft: "4px",
           marginRight: "4px",
@@ -57,11 +45,14 @@ export default function Chat() {
             <span
               css={{
                 paddingRight: "8px",
-                color: getColorForName(message),
+                color: randomcolor({
+                  hue: "#00FFFF",
+                  seed: message.displayName,
+                }),
                 fontFamily: "Source Sans Pro",
                 fontWeight: "bold",
                 textAlign: "end",
-                width: "35%",
+                width: "40%",
                 whiteSpace: "nowrap",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
@@ -75,6 +66,7 @@ export default function Chat() {
                 fontWeight: "bold",
                 fontFamily: "Source Sans Pro",
                 width: "65%",
+                wordBreak: "break-word",
               }}
             >
               <span

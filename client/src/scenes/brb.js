@@ -1,17 +1,14 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import { FaTwitch, FaDiscord } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
 import canvasBg from "../images/canvas-bg.png";
 import useChannel from "../hooks/channel";
-import useCurrentViewers from "../hooks/current-viewer-count";
 import useUpcomingStreams from "../hooks/upcoming-streams";
 import { useValue } from "@repeaterjs/react-hooks";
 
 export default function MissionBriefingScene() {
   const channel = useChannel();
-  const userCount = useCurrentViewers();
   const upcomingStreams = useUpcomingStreams();
 
   // use a generator to produce an upcoming stream

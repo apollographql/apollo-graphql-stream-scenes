@@ -1,8 +1,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 
-import bg from "../images/apollo-bg.svg";
-import restricted from "../images/restricted-area.png";
+import canvasBg from "../images/canvas-bg.png";
 
 export default function MissionBriefingScene() {
   return (
@@ -10,10 +9,9 @@ export default function MissionBriefingScene() {
       css={{
         width: "100vw",
         height: "100vh",
-        backgroundColor: "#ffffff",
-        backgroundImage: `URL(${bg})`,
-        backgroundSize: "100px 100px",
-        // backgroundBlendMode: "overlay",
+        backgroundColor: "#311C87",
+        backgroundImage: `URL(${canvasBg})`,
+        backgroundRepeat: "no-repeat",
       }}
     >
       <div
@@ -25,20 +23,13 @@ export default function MissionBriefingScene() {
           height: "100%",
         }}
       >
-        <img
-          css={{
-            objectFit: "contain",
-            marginBottom: "24px",
-          }}
-          src={restricted}
-          alt="restricted area"
-        />
         <h1
           css={{
             fontFamily: "Source Sans Pro",
-            fontSize: "2.5rem",
+            fontSize: "7.5rem",
             fontWeight: 800,
             textTransform: "uppercase",
+            color: "#ffffff",
           }}
         >
           Restricted Area
