@@ -29,10 +29,10 @@ export default function useMemes() {
 
   const value = useValue(async function* () {
     for await (const meme of memes) {
-      yield meme;
+      yield { url: meme };
       await new Promise((resolve) => setTimeout(resolve, 5000));
     }
   });
 
-  return value;
+  return value || {};
 }

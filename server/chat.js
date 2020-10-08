@@ -23,7 +23,7 @@ const COMMANDS_MAP = {
   "!zap": "playSound",
   "!woosh": "playSound",
   "!lp-project":
-    "Trevor and Kurt are building a Twitch chat meme integration so you can spam the stream with MEMES.\nhttps://github.com/kkemple/apollo-stream-scenes",
+    "Trevor and Kurt are building a Twitch chat meme integration so you can spam the stream with MEMES.\nhttps://github.com/kkemple/apollo-graphql-stream-scenes",
   "!music":
     "https://open.spotify.com/playlist/4kAqBBEZQsBIXMIJl6u8tO?si=yTuT421KRbu05kcLIMWYWg",
   "!playlist":
@@ -132,9 +132,15 @@ const createChatClient = (pubsub) => {
           const meme = cloudinary.url(imageUrl, {
             transformation: [
               {
+                crop: "scale",
+                width: 800,
+              },
+              {
                 gravity: "south",
+                color: "white",
                 y: 80,
-                color: "#fff",
+                width: 640,
+                crop: "fit",
                 overlay: {
                   font_family: "Impact",
                   font_size: 48,
@@ -143,7 +149,7 @@ const createChatClient = (pubsub) => {
               },
               {
                 gravity: "south_west",
-                color: "#fff",
+                color: "white",
                 y: 5,
                 x: 5,
                 overlay: {

@@ -1,16 +1,18 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import { useState, useRef, useEffect } from "react";
-import useMemes from "../hooks/memes";
 import { AnimatePresence, motion } from "framer-motion";
+import useSound from "use-sound";
+
+import useMemes from "../hooks/memes";
+import waterDrop from "../sounds/water-drop.wav";
 
 const Memes = () => {
   const meme = useMemes();
   const [current, setCurrent] = useState(meme);
   const [stale, setStale] = useState(false);
   // TODO: add bubble sound on enter 🛁
-  // const [playbackRate, setPlaybackRate] = useState(0.8);
-  // const [play] = useSound(followSound, { playbackRate, volume: 0.5 });
+  const [play] = useSound(waterDrop);
   const timeout = useRef();
 
   useEffect(() => {
@@ -18,21 +20,18 @@ const Memes = () => {
       clearTimeout(timeout.current);
 
       const image = new Image();
-      image.src = meme;
+      image.src = meme.url;
       image.onload = () => {
         setStale(false);
         setCurrent(meme);
-
-        // play();
-        // setPlaybackRate(playbackRate + 0.1);
+        play();
 
         timeout.current = setTimeout(() => {
           setStale(true);
-          // setPlaybackRate(0.8);
         }, 4000);
       };
     }
-  }, [meme, current, stale, setStale, setCurrent]);
+  }, [meme, current, stale, setStale, setCurrent, play]);
 
   return (
     <div
@@ -55,7 +54,7 @@ const Memes = () => {
               stiffness: 300,
               damping: 20,
             }}
-            src={current}
+            src={current.url}
             css={{ width: 600 }}
           />
         )}
