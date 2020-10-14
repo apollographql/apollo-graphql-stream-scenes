@@ -36,6 +36,7 @@ const COMMANDS_MAP = {
 
 const memeMap = {
   tothestars: "IMG_20200302_203929_1_encign.jpg",
+  screamcat: "scream-cat_qxh9v9.jpg",
   groinshot: "ezgif-6-b472badd75c7_iteboa.gif",
 };
 
