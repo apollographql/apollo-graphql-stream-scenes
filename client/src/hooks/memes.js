@@ -13,7 +13,7 @@ export default function useMemes() {
   const [memes, push, stop] = useRepeater();
 
   useEffect(() => {
-    const unsubscribe = client
+    const { unsubscribe } = client
       .subscribe({ query: MEME_SUBSCRIPTION })
       .subscribe({
         next: ({ data }) => {
