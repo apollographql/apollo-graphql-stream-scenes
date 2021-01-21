@@ -23,7 +23,7 @@ const COMMANDS_MAP = {
   "!zap": "playSound",
   "!woosh": "playSound",
   "!lp-project":
-    "Trevor and Kurt are building a Twitch chat meme integration so you can spam the stream with MEMES.\nhttps://github.com/kkemple/apollo-graphql-stream-scenes",
+    "Trevor and Kurt are building a an app to track skate spots with React Native, AWS Amplify, and Apollo Client.\nhttps://github.com/kkemple/spot-check",
   "!music":
     "https://open.spotify.com/playlist/4kAqBBEZQsBIXMIJl6u8tO?si=yTuT421KRbu05kcLIMWYWg",
   "!playlist":
@@ -38,6 +38,7 @@ const memeMap = {
   tothestars: "IMG_20200302_203929_1_encign.jpg",
   screamcat: "scream-cat_qxh9v9.jpg",
   groinshot: "ezgif-6-b472badd75c7_iteboa.gif",
+  hacker: "EruVpaFXMAY2Xfz_hra4qe.jpg",
 };
 
 const sleep = (time) => new Promise((res) => setTimeout(res, time));
