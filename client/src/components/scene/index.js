@@ -190,21 +190,6 @@ export default function Scene({ showType }) {
                 <FaTwitch css={{ marginRight: 4, marginTop: 3 }} /> {userCount}
               </h5>
             )}
-            <h5
-              css={{
-                display: "flex",
-                alignItems: "flex-start",
-                fontSize: "1.2rem",
-                fontFamily: "Source Sans Pro",
-                fontWeight: 500,
-                paddingRight: 8,
-                marginRight: 6,
-                borderRight: "2px solid #311C87",
-              }}
-            >
-              <FaDiscord css={{ marginRight: 4, marginTop: 3 }} />{" "}
-              {"go.apollo.dev/discord"}
-            </h5>
             {upcomingStreams ? (
               <div css={{ display: "flex", fontFamily: "Source Sans Pro" }}>
                 <span css={{ marginRight: 4, fontWeight: 600 }}>
