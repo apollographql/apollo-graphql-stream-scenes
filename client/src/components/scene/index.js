@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import { FaTwitch, FaDiscord } from "react-icons/fa";
+import { FaTwitch } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
 import canvasBg from "../../images/canvas-bg.png";
