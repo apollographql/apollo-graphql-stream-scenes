@@ -1,3 +1,9 @@
+# Archival
+This repo was archived by the Apollo Security team on 2023-05-26.
+
+Please reach out with questions or concerns at security@apollographql.com
+
+
 # Apollo GraphQL Stream Scenes
 
 > This repository hosts the server and web app used to power layouts for livestreaming.

@@ -1,0 +1,7 @@
+[[ rules ]]
+    id = "generic-api-key"
+    [ rules.allowlist ]
+        commits = [
+            # Allowlist an invalid Twitch bot token
+            "60601f07c0a165380558f6775aef18f837ae0f74"
+        ]
